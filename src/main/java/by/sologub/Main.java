@@ -74,12 +74,17 @@ public class Main {
 
     private static void task7() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+        boolean noneMatchWithOceania = animals.stream().noneMatch(animal -> animal.getOrigin().equals("Oceania"));
+        System.out.println(noneMatchWithOceania);
     }
 
     private static void task8() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+        int maxAge = animals.stream()
+                .sorted(Comparator.comparing(Animal::getBread)).limit(100)
+                .max(Comparator.comparing(Animal::getAge))
+                .get().getAge();
+        System.out.println(maxAge);
     }
 
     private static void task9() throws IOException {
