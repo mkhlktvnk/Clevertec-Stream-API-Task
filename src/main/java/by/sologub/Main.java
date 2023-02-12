@@ -114,7 +114,15 @@ public class Main {
 
     private static void task12() throws IOException {
         List<Person> people = Util.getPersons();
-//        Продолжить...
+        people.stream()
+                .filter(
+                        person -> person.getGender().equals("Male") &&
+                        LocalDate.now().minusYears(18).isAfter(person.getDateOfBirth()) &&
+                        LocalDate.now().minusYears(27).isAfter(person.getDateOfBirth())
+                )
+                .sorted(Comparator.comparing(Person::getRecruitmentGroup))
+                .limit(200)
+                .forEach(System.out::println);
     }
 
     private static void task13() throws IOException {
