@@ -89,7 +89,11 @@ public class Main {
 
     private static void task9() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+        int minArrayLength = animals.stream()
+                .map(animal -> animal.getBread().toCharArray())
+                .min(Comparator.comparing(array -> array.length))
+                .get().length;
+        System.out.println(minArrayLength);
     }
 
     private static void task10() throws IOException {
