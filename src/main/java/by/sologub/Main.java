@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class Main {
@@ -127,7 +128,26 @@ public class Main {
 
     private static void task13() throws IOException {
         List<House> houses = Util.getHouses();
-        //        Продолжить...
+        Predicate<House> peopleFromHospital = house -> house.getBuildingType()
+                .equals("Hospital");
+        Predicate<Person> children = person -> person.getDateOfBirth()
+                .isAfter(LocalDate.now().minusYears(18));
+        Predicate<Person> oldPeople = person -> person.getDateOfBirth()
+                .isBefore(LocalDate.now().minusYears(65));
+        Stream<Person> sickAndWounded = houses.stream()
+                .filter(peopleFromHospital)
+                .flatMap(house -> house.getPersonList().stream());
+        Stream<Person> childrenAndOldPeople = houses.stream()
+                .filter(peopleFromHospital.negate())
+                .flatMap(house -> house.getPersonList().stream())
+                .filter(children.or(oldPeople));
+        Stream<Person> remainingPeople = houses.stream()
+                .filter(peopleFromHospital.negate())
+                .flatMap(house -> house.getPersonList().stream())
+                .filter(children.negate().and(oldPeople.negate()));
+        Stream.concat(sickAndWounded, Stream.concat(childrenAndOldPeople, remainingPeople))
+                .limit(500)
+                .forEach(System.out::println);
     }
 
     private static void task14() throws IOException {
