@@ -9,6 +9,7 @@ import by.sologub.util.Util;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -44,7 +45,7 @@ public class Main {
                 .filter(animal -> animal.getAge() >= 10 && animal.getAge() <= 20)
                 .sorted(Comparator.comparing(Animal::getAge))
                 .collect(Collectors.groupingBy(f -> zooIndex.getAndIncrement() / animalsPerZoo))
-                .get(zooToPrint)
+                .getOrDefault(zooToPrint, new ArrayList<>())
                 .forEach(System.out::println);
     }
 
