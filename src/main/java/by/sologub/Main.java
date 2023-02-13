@@ -138,23 +138,23 @@ public class Main {
 
     private static void task13() throws IOException {
         List<House> houses = Util.getHouses();
-        Predicate<House> peopleFromHospital = house -> house.getBuildingType()
+        Predicate<House> sickAndWoundedPredicate = house -> house.getBuildingType()
                 .equals("Hospital");
-        Predicate<Person> children = person -> person.getDateOfBirth()
+        Predicate<Person> childrenPredicate = person -> person.getDateOfBirth()
                 .isAfter(LocalDate.now().minusYears(18));
-        Predicate<Person> oldPeople = person -> person.getDateOfBirth()
+        Predicate<Person> oldPeoplePredicate = person -> person.getDateOfBirth()
                 .isBefore(LocalDate.now().minusYears(65));
         Stream<Person> sickAndWounded = houses.stream()
-                .filter(peopleFromHospital)
+                .filter(sickAndWoundedPredicate)
                 .flatMap(house -> house.getPersonList().stream());
         Stream<Person> childrenAndOldPeople = houses.stream()
-                .filter(peopleFromHospital.negate())
+                .filter(sickAndWoundedPredicate.negate())
                 .flatMap(house -> house.getPersonList().stream())
-                .filter(children.or(oldPeople));
+                .filter(childrenPredicate.or(oldPeoplePredicate));
         Stream<Person> remainingPeople = houses.stream()
-                .filter(peopleFromHospital.negate())
+                .filter(sickAndWoundedPredicate.negate())
                 .flatMap(house -> house.getPersonList().stream())
-                .filter(children.negate().and(oldPeople.negate()));
+                .filter(childrenPredicate.negate().and(oldPeoplePredicate.negate()));
         Stream.concat(Stream.concat(sickAndWounded, childrenAndOldPeople), remainingPeople)
                 .limit(500)
                 .forEach(System.out::println);
