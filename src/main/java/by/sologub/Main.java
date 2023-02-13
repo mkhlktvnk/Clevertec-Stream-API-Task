@@ -155,7 +155,7 @@ public class Main {
                 .filter(peopleFromHospital.negate())
                 .flatMap(house -> house.getPersonList().stream())
                 .filter(children.negate().and(oldPeople.negate()));
-        Stream.concat(sickAndWounded, Stream.concat(childrenAndOldPeople, remainingPeople))
+        Stream.concat(Stream.concat(sickAndWounded, childrenAndOldPeople), remainingPeople)
                 .limit(500)
                 .forEach(System.out::println);
     }
