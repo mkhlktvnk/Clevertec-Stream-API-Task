@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
@@ -35,7 +37,15 @@ public class Main {
 
     private static void task1() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        //        animals.stream() Продолжить ...
+        int zooToPrint = 2;
+        int animalsPerZoo = 7;
+        AtomicInteger zooIndex = new AtomicInteger(0);
+        animals.stream()
+                .filter(animal -> animal.getAge() >= 10 && animal.getAge() <= 20)
+                .sorted(Comparator.comparing(Animal::getAge))
+                .collect(Collectors.groupingBy(f -> zooIndex.getAndIncrement() / animalsPerZoo))
+                .get(zooToPrint)
+                .forEach(System.out::println);
     }
 
     private static void task2() throws IOException {
