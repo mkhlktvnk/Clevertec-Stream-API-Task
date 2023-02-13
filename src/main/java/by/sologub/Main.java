@@ -51,8 +51,8 @@ public class Main {
 
     private static void task2() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        animals.stream().filter(animal -> animal.getOrigin().equals("Japanese"))
-                .map(animal -> animal.getGender().equals("Female") ?
+        animals.stream().filter(animal -> "Japanese".equals(animal.getOrigin()))
+                .map(animal -> "Female".equals(animal.getGender()) ?
                         animal.getBread().toUpperCase() : animal.getBread())
                 .forEach(System.out::println);
     }
@@ -68,46 +68,47 @@ public class Main {
 
     private static void task4() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        long count = animals.stream().filter(animal -> animal.getGender().equals("Female")).count();
+        long count = animals.stream()
+                .filter(animal -> "Female".equals(animal.getGender())).count();
         System.out.println(count);
     }
 
     private static void task5() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        boolean isHungarianExists = animals.stream().filter(animal -> animal.getAge() >= 20 && animal.getAge() <= 30)
-                .anyMatch(animal -> animal.getOrigin().equals("Hungarian"));
+        boolean isHungarianExists = animals.stream()
+                .filter(animal -> animal.getAge() >= 20 && animal.getAge() <= 30)
+                .anyMatch(animal -> "Hungarian".equals(animal.getOrigin()));
         System.out.println(isHungarianExists);
     }
 
     private static void task6() throws IOException {
         List<Animal> animals = Util.getAnimals();
         boolean isCorrectGender = animals.stream()
-                .allMatch(animal -> animal.getGender().equals("Male") || animal.getGender().equals("Female"));
+                .allMatch(animal -> "Male".equals(animal.getGender()) || "Female".equals(animal.getGender()));
         System.out.println(isCorrectGender);
     }
 
     private static void task7() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        boolean noneMatchWithOceania = animals.stream().noneMatch(animal -> animal.getOrigin().equals("Oceania"));
+        boolean noneMatchWithOceania = animals.stream()
+                .noneMatch(animal -> "Oceania".equals(animal.getOrigin()));
         System.out.println(noneMatchWithOceania);
     }
 
     private static void task8() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        int maxAge = animals.stream()
+        animals.stream()
                 .sorted(Comparator.comparing(Animal::getBread)).limit(100)
                 .max(Comparator.comparing(Animal::getAge))
-                .get().getAge();
-        System.out.println(maxAge);
+                .ifPresent(System.out::println);
     }
 
     private static void task9() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        int minArrayLength = animals.stream()
+        animals.stream()
                 .map(animal -> animal.getBread().toCharArray())
                 .min(Comparator.comparing(array -> array.length))
-                .get().length;
-        System.out.println(minArrayLength);
+                .ifPresent(array -> System.out.println(array.length));
     }
 
     private static void task10() throws IOException {
@@ -118,20 +119,17 @@ public class Main {
 
     private static void task11() throws IOException {
         List<Animal> animals = Util.getAnimals();
-        double indonesianAverageAge = animals.stream()
+        animals.stream()
                 .filter(animal -> animal.getOrigin().equals("Indonesian"))
-                .mapToInt(Animal::getAge).average().getAsDouble();
-        System.out.println(indonesianAverageAge);
+                .mapToInt(Animal::getAge).average().ifPresent(System.out::println);
     }
 
     private static void task12() throws IOException {
         List<Person> people = Util.getPersons();
         people.stream()
-                .filter(
-                        person -> person.getGender().equals("Male") &&
-                        LocalDate.now().minusYears(18).isAfter(person.getDateOfBirth()) &&
-                        LocalDate.now().minusYears(27).isAfter(person.getDateOfBirth())
-                )
+                .filter(person -> person.getGender().equals("Male"))
+                .filter(person -> LocalDate.now().minusYears(18).isAfter(person.getDateOfBirth()))
+                .filter(person -> LocalDate.now().minusYears(27).isAfter(person.getDateOfBirth()))
                 .sorted(Comparator.comparing(Person::getRecruitmentGroup))
                 .limit(200)
                 .forEach(System.out::println);
