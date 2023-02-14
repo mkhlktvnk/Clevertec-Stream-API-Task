@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -162,7 +163,59 @@ public class Main {
 
     private static void task14() throws IOException {
         List<Car> cars = Util.getCars();
-        //        Продолжить...
+        Predicate<Car> firstEchelonPredicate = car -> "Jaguar".equals(car.getCarMake()) ||
+                "White".equals(car.getColor());
+        Predicate<Car> secondEchelonPredicate = car -> car.getMass() <= 1500 ||
+                "BMW".equals(car.getCarMake()) || "Lexus".equals(car.getCarMake()) ||
+                "Chrysler".equals(car.getCarMake()) || "Toyota".equals(car.getCarMake());
+        Predicate<Car> kazakhCarsPredicate = car -> car.getMass() > 4000 && "Black".equals(car.getColor()) ||
+                "GMC".equals(car.getCarMake()) || "Dodge".equals(car.getCarMake());
+        Predicate<Car> kyrgyzCarsPredicate = car -> car.getReleaseYear() < 1982 ||
+                "Civic".equals(car.getCarModel()) || "Cherokee".equals(car.getCarMake());
+        Predicate<Car> russianCarsPredicate = car -> !"Yellow".equals(car.getColor()) &&
+                !"Red".equals(car.getColor()) && !"Green".equals(car.getColor()) &&
+                !"Blue".equals(car.getColor()) || car.getPrice() > 40000;
+        Predicate<Car> mongolianCarsPredicate = car -> car.getVin().contains("59");
+        ToDoubleFunction<Car> calculateExpenses = car -> car.getMass() * 0.001 * 1.73;
+        double totalCost = Stream.of(
+                cars.stream().filter(firstEchelonPredicate)
+                        .mapToDouble(calculateExpenses)
+                        .sum(),
+                cars.stream().filter(secondEchelonPredicate
+                                .and(firstEchelonPredicate.negate()))
+                        .mapToDouble(calculateExpenses)
+                        .sum(),
+                cars.stream().filter(kazakhCarsPredicate
+                                .and(firstEchelonPredicate.negate())
+                                .and(secondEchelonPredicate).negate())
+                        .mapToDouble(calculateExpenses)
+                        .sum(),
+                cars.stream().filter(kyrgyzCarsPredicate
+                                .and(firstEchelonPredicate.negate())
+                                .and(secondEchelonPredicate).negate()
+                                .and(kazakhCarsPredicate).negate())
+                        .mapToDouble(calculateExpenses)
+                        .sum(),
+                cars.stream().filter(russianCarsPredicate
+                                .and(firstEchelonPredicate.negate())
+                                .and(secondEchelonPredicate).negate()
+                                .and(kazakhCarsPredicate).negate()
+                                .and(kyrgyzCarsPredicate).negate())
+                        .mapToDouble(calculateExpenses)
+                        .sum(),
+                cars.stream().filter(mongolianCarsPredicate
+                                .and(firstEchelonPredicate.negate())
+                                .and(secondEchelonPredicate).negate()
+                                .and(kazakhCarsPredicate).negate()
+                                .and(kyrgyzCarsPredicate).negate()
+                                .and(russianCarsPredicate).negate())
+                        .mapToDouble(calculateExpenses)
+                        .sum()
+                )
+                .peek(System.out::println)
+                .mapToDouble(value -> value)
+                .sum();
+        System.out.println(totalCost);
     }
 
     private static void task15() throws IOException {
