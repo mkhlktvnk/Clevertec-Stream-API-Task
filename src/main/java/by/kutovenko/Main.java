@@ -1,11 +1,11 @@
-package by.sologub;
+package by.kutovenko;
 
-import by.sologub.model.Animal;
-import by.sologub.model.Car;
-import by.sologub.model.Flower;
-import by.sologub.model.House;
-import by.sologub.model.Person;
-import by.sologub.util.Util;
+import by.kutovenko.model.Animal;
+import by.kutovenko.model.Car;
+import by.kutovenko.model.Flower;
+import by.kutovenko.model.House;
+import by.kutovenko.model.Person;
+import by.kutovenko.util.Util;
 
 import java.io.IOException;
 import java.time.LocalDate;

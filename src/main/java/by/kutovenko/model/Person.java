@@ -1,4 +1,4 @@
-package by.sologub.model;
+package by.kutovenko.model;
 
 import java.time.LocalDate;
 
