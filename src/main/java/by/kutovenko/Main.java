@@ -163,9 +163,9 @@ public class Main {
 
     private static void task14() throws IOException {
         List<Car> cars = Util.getCars();
-        Predicate<Car> firstEchelonPredicate = car -> "Jaguar".equals(car.getCarMake()) ||
+        Predicate<Car> turkmenianCarsPredicate = car -> "Jaguar".equals(car.getCarMake()) ||
                 "White".equals(car.getColor());
-        Predicate<Car> secondEchelonPredicate = car -> car.getMass() <= 1500 ||
+        Predicate<Car> uzbekCarsPredicate = car -> car.getMass() <= 1500 ||
                 "BMW".equals(car.getCarMake()) || "Lexus".equals(car.getCarMake()) ||
                 "Chrysler".equals(car.getCarMake()) || "Toyota".equals(car.getCarMake());
         Predicate<Car> kazakhCarsPredicate = car -> car.getMass() > 4000 && "Black".equals(car.getColor()) ||
@@ -178,34 +178,34 @@ public class Main {
         Predicate<Car> mongolianCarsPredicate = car -> car.getVin().contains("59");
         ToDoubleFunction<Car> calculateExpenses = car -> car.getMass() * 0.001 * 1.73;
         double totalCost = Stream.of(
-                cars.stream().filter(firstEchelonPredicate)
+                cars.stream().filter(turkmenianCarsPredicate)
                         .mapToDouble(calculateExpenses)
                         .sum(),
-                cars.stream().filter(secondEchelonPredicate
-                                .and(firstEchelonPredicate.negate()))
+                cars.stream().filter(uzbekCarsPredicate
+                                .and(turkmenianCarsPredicate.negate()))
                         .mapToDouble(calculateExpenses)
                         .sum(),
                 cars.stream().filter(kazakhCarsPredicate
-                                .and(firstEchelonPredicate.negate())
-                                .and(secondEchelonPredicate).negate())
+                                .and(turkmenianCarsPredicate.negate())
+                                .and(uzbekCarsPredicate).negate())
                         .mapToDouble(calculateExpenses)
                         .sum(),
                 cars.stream().filter(kyrgyzCarsPredicate
-                                .and(firstEchelonPredicate.negate())
-                                .and(secondEchelonPredicate).negate()
+                                .and(turkmenianCarsPredicate.negate())
+                                .and(uzbekCarsPredicate).negate()
                                 .and(kazakhCarsPredicate).negate())
                         .mapToDouble(calculateExpenses)
                         .sum(),
                 cars.stream().filter(russianCarsPredicate
-                                .and(firstEchelonPredicate.negate())
-                                .and(secondEchelonPredicate).negate()
+                                .and(turkmenianCarsPredicate.negate())
+                                .and(uzbekCarsPredicate).negate()
                                 .and(kazakhCarsPredicate).negate()
                                 .and(kyrgyzCarsPredicate).negate())
                         .mapToDouble(calculateExpenses)
                         .sum(),
                 cars.stream().filter(mongolianCarsPredicate
-                                .and(firstEchelonPredicate.negate())
-                                .and(secondEchelonPredicate).negate()
+                                .and(turkmenianCarsPredicate.negate())
+                                .and(uzbekCarsPredicate).negate()
                                 .and(kazakhCarsPredicate).negate()
                                 .and(kyrgyzCarsPredicate).negate()
                                 .and(russianCarsPredicate).negate())
