@@ -46,7 +46,9 @@ public class Main {
                 .filter(animal -> animal.getAge() >= 10 && animal.getAge() <= 20)
                 .sorted(Comparator.comparing(Animal::getAge))
                 .collect(Collectors.groupingBy(f -> zooIndex.getAndIncrement() / animalsPerZoo))
-                .getOrDefault(zooToPrint, new ArrayList<>())
+                .values().stream()
+                .skip(2)
+                .limit(1)
                 .forEach(System.out::println);
     }
 
