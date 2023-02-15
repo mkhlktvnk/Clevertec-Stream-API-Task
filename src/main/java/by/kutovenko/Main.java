@@ -176,7 +176,7 @@ public class Main {
                 !"Red".equals(car.getColor()) && !"Green".equals(car.getColor()) &&
                 !"Blue".equals(car.getColor()) || car.getPrice() > 40000;
         Predicate<Car> mongolianCarsPredicate = car -> car.getVin().contains("59");
-        ToDoubleFunction<Car> calculateExpenses = car -> car.getMass() * 0.001 * 1.73;
+        ToDoubleFunction<Car> calculateExpenses = car -> car.getMass() * 0.001 * 7.14;
         double totalCost = Stream.of(
                 cars.stream().filter(turkmenianCarsPredicate)
                         .mapToDouble(calculateExpenses)
